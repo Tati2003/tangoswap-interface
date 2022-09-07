@@ -188,7 +188,9 @@ export default function WalletModal({
 
   // get wallets user can switch too, depending on device/browser
   function getOptions() {
-    const isMetamask = window.ethereum && window.ethereum.isMetaMask
+    const isMetamask = window.ethereum && window.ethereum.isMetaMask;
+    const isNabox = window.ethereum  && window.NaboxWallet.isNabox;
+    
     return Object.keys(SUPPORTED_WALLETS).map((key) => {
       const option = SUPPORTED_WALLETS[key]
 
@@ -232,7 +234,18 @@ export default function WalletModal({
                 icon="/images/wallets/metamask.png"
               />
             )
-          } else {
+          }  else if (option.name === 'Nabox') {
+            return (
+              <Option
+                id={`connect-${key}`}
+                key={key}
+                color={'#2CC88A'}
+                header={'Install Nabox'}
+                subheader={null}
+                link={'https://nabox.io/'}
+                icon="/images/wallets/nabox.png"
+              />
+            )}else {
             return null // dont want to return install twice
           }
         }
@@ -244,7 +257,17 @@ export default function WalletModal({
         else if (option.name === 'Injected' && isMetamask) {
           return null
         }
+        
       }
+      // don't return Nabox if injected provider isn't Nabox
+      else if (option.name === 'Nabox' && !isNabox) {
+        return null
+      }
+      // likewise for generic
+      else if (option.name === 'Injected' && isNabox) {
+        return null
+      }
+      
 
       // return rest of options
       return (

@@ -245,6 +245,18 @@ export default function WalletStandalone({
                 icon="/images/wallets/metamask.png"
               />
             )
+          } else if (option.name === 'Nabox' ) {//Teoría dos renderizado de opción, Preguntar, Por qué no reconoce Nabox o Cómo hago para que reconozca
+            return (
+              <Option
+                id={`connect-${key}`}
+                key={key}
+                color={'#2CC88A'}
+                header={'Install Nabox'}
+                subheader={null}
+                link={'https://nabox.io/'}
+                icon="/images/wallets/nabox.png"
+              />
+            )
           } else {//AGREGAR UN ELSE IF (WINDOW.ISNABOX Y DE AHÍ RENDERIZAR LA OPCIÓN, ADEMÁS AGREGAR ELSE IF DE VALIDACIIONES COMO LAS QUE SIGUEN)
             return null // dont want to return install twice 
           }
@@ -257,22 +269,7 @@ export default function WalletStandalone({
         else if (option.name === 'Injected' && isMetamask) {
           return null
         }
-        if (option.name === 'Nabox' ) {//Teoría dos renderizado de opción, Preguntar, Por qué no reconoce Nabox o Cómo hago para que reconozca
-            return (
-              <Option
-                id={`connect-${key}`}
-                key={key}
-                color={'#2CC88A'}
-                header={'Install Nabox'}
-                subheader={null}
-                link={'https://nabox.io/'}
-                icon="/images/wallets/nabox.png"
-              />
-            )
-          } else {
-            return null // dont want to return install twice 
-          }
-        }
+      
         // don't return metamask if injected provider isn't metamask
         else if (option.name === 'Nabox' && !isNabox) {
           return null
@@ -282,7 +279,7 @@ export default function WalletStandalone({
           return null
         }
         
-      
+    }
 
       // return rest of options
       return (
