@@ -45,6 +45,14 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     href: null,
     color: '#E8831D',
   },
+  NABOX: {
+    connector: injected,//Teoría1:Cambiar connector ya que se conecta con metamask
+    name: 'Nabox',
+    iconName: 'nabox.png',
+    description: 'One-click cross-chain for easy swaps across different chains',
+    href: null,
+    color: '#2CC88A',
+  },
   WALLET_CONNECT: {
     connector: async () => {
       const WalletConnectConnector = (await import('@web3-react/walletconnect-connector')).WalletConnectConnector

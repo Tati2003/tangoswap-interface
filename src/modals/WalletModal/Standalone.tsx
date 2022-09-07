@@ -195,7 +195,10 @@ export default function WalletStandalone({
 
   // get wallets user can switch too, depending on device/browser
   function getOptions() {
-    const isMetamask = window.ethereum && window.ethereum.isMetaMask
+    const isMetamask = window.ethereum && window.ethereum.isMetaMask;
+    const isNabox = window.NaboxWallet  && window.NaboxWallet.isNabox;
+    
+   
     return Object.keys(SUPPORTED_WALLETS).map((key) => {
       const option = SUPPORTED_WALLETS[key]
 
@@ -242,8 +245,8 @@ export default function WalletStandalone({
                 icon="/images/wallets/metamask.png"
               />
             )
-          } else {
-            return null // dont want to return install twice
+          } else {//AGREGAR UN ELSE IF (WINDOW.ISNABOX Y DE AHÍ RENDERIZAR LA OPCIÓN, ADEMÁS AGREGAR ELSE IF DE VALIDACIIONES COMO LAS QUE SIGUEN)
+            return null // dont want to return install twice 
           }
         }
         // don't return metamask if injected provider isn't metamask
@@ -254,7 +257,32 @@ export default function WalletStandalone({
         else if (option.name === 'Injected' && isMetamask) {
           return null
         }
-      }
+        if (option.name === 'Nabox' ) {//Teoría dos renderizado de opción, Preguntar, Por qué no reconoce Nabox o Cómo hago para que reconozca
+            return (
+              <Option
+                id={`connect-${key}`}
+                key={key}
+                color={'#2CC88A'}
+                header={'Install Nabox'}
+                subheader={null}
+                link={'https://nabox.io/'}
+                icon="/images/wallets/nabox.png"
+              />
+            )
+          } else {
+            return null // dont want to return install twice 
+          }
+        }
+        // don't return metamask if injected provider isn't metamask
+        else if (option.name === 'Nabox' && !isNabox) {
+          return null
+        }
+        // likewise for generic
+        else if (option.name === 'Injected' && isNabox) {
+          return null
+        }
+        
+      
 
       // return rest of options
       return (

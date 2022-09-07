@@ -72,6 +72,8 @@ export default function PendingView({
   tryActivation: (connector: AbstractConnector) => void
 }) {
   const isMetamask = window?.ethereum?.isMetaMask
+  const isNabox = window.ethereum  && window.NaboxWallet.isNabox;
+
 
   return (
     <PendingSection>
@@ -105,18 +107,25 @@ export default function PendingView({
               return null
             }
           }
-          return (
-            <Option
-              id={`connect-${key}`}
-              key={key}
-              clickable={false}
-              color={option.color}
-              header={option.name}
-              subheader={option.description}
-              icon={'/images/wallets/' + option.iconName}
-            />
-          )
-        }
+          else if (isNabox && option.name !== 'Nabox') {
+            return null
+          }
+          if (!isNabox && option.name === 'Nabox') {
+            return null
+          }
+        
+        return (
+          <Option
+            id={`connect-${key}`}
+            key={key}
+            clickable={false}
+            color={option.color}
+            header={option.name}
+            subheader={option.description}
+            icon={'/images/wallets/' + option.iconName}
+          />
+        )}
+        
         return null
       })}
     </PendingSection>
