@@ -14,6 +14,9 @@ const supportedChainIds = Object.values(ChainId) as number[]
 export const injected = new InjectedConnector({
   supportedChainIds,
 })
+export const naboxConnector = new InjectedConnector({
+  supportedChainIds,
+})
 
 export interface WalletInfo {
   connector?: (() => Promise<AbstractConnector>) | AbstractConnector
@@ -46,7 +49,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     color: '#E8831D',
   },
   NABOX: {
-    connector: injected,//Teoría1:Cambiar connector ya que se conecta con metamask
+    connector: naboxConnector,
     name: 'Nabox',
     iconName: 'nabox.png',
     description: 'One-click cross-chain for easy swaps across different chains',

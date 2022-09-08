@@ -1,4 +1,4 @@
-import { SUPPORTED_WALLETS, injected } from '../../config/wallets'
+import { SUPPORTED_WALLETS, injected, naboxConnector } from '../../config/wallets'
 
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import Dots from '../../components/Dots'
@@ -97,6 +97,7 @@ export default function PendingView({
         </LoadingWrapper>
       </LoadingMessage>
       {Object.keys(SUPPORTED_WALLETS).map((key) => {
+        
         const option = SUPPORTED_WALLETS[key]
         if (option.connector === connector) {
           if (option.connector === injected) {
@@ -107,12 +108,13 @@ export default function PendingView({
               return null
             }
           }
-          else if (isNabox && option.name !== 'Nabox') {
+          else if(option.connector === naboxConnector){
+           if (isNabox && option.name !== 'Nabox') {
             return null
           }
           if (!isNabox && option.name === 'Nabox') {
             return null
-          }
+          }}
         
         return (
           <Option

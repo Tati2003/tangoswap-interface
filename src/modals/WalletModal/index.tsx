@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { SUPPORTED_WALLETS, injected } from '../../config/wallets'
+import { SUPPORTED_WALLETS, injected, naboxConnector } from '../../config/wallets'
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
 
@@ -222,19 +222,37 @@ export default function WalletModal({
       if (option.connector === injected) {
         // don't show injected if there's no injected provider
         if (!(window.web3 || window.ethereum)) {
-          if (option.name === 'MetaMask') {
-            return (
-              <Option
-                id={`connect-${key}`}
-                key={key}
-                color={'#E8831D'}
-                header={'Install Metamask'}
-                subheader={null}
-                link={'https://metamask.io/'}
-                icon="/images/wallets/metamask.png"
-              />
-            )
-          }  else if (option.name === 'Nabox') {
+            if (option.name === 'MetaMask') {
+                return (
+                <Option
+                    id={`connect-${key}`}
+                    key={key}
+                    color={'#E8831D'}
+                    header={'Install Metamask'}
+                    subheader={null}
+                    link={'https://metamask.io/'}
+                    icon="/images/wallets/metamask.png"
+                />
+                )
+            } else {
+                return null // dont want to return install twice 
+            }
+            }
+        // don't return metamask if injected provider isn't metamask
+        else if (option.name === 'MetaMask' && !isMetamask) {
+          return null
+        }
+        // likewise for generic
+        else if (option.name === 'Injected' && isMetamask) {
+          return null
+        }
+        
+    }
+    
+    if (option.connector === naboxConnector) {
+        // don't show naboxConnector if there's no naboxConnector provider
+        if (!(window.web3 || window.NaboxWallet)) {
+             if (option.name === 'Nabox' ) {
             return (
               <Option
                 id={`connect-${key}`}
@@ -245,29 +263,21 @@ export default function WalletModal({
                 link={'https://nabox.io/'}
                 icon="/images/wallets/nabox.png"
               />
-            )}else {
-            return null // dont want to return install twice
+            )
+          } else {
+            return null // dont want to return install twice 
           }
         }
-        // don't return metamask if injected provider isn't metamask
-        else if (option.name === 'MetaMask' && !isMetamask) {
+        // don't return nabox if naboxConnector provider isn't nabox
+        else if (option.name === 'Nabox' && !isNabox) {
           return null
         }
         // likewise for generic
-        else if (option.name === 'Injected' && isMetamask) {
+        else if (option.name === 'naboxConnector' && isNabox) {
           return null
         }
         
-      }
-      // don't return Nabox if injected provider isn't Nabox
-      else if (option.name === 'Nabox' && !isNabox) {
-        return null
-      }
-      // likewise for generic
-      else if (option.name === 'Injected' && isNabox) {
-        return null
-      }
-      
+    }
 
       // return rest of options
       return (
